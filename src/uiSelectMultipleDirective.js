@@ -1,4 +1,4 @@
-uis.directive('uiSelectMultiple', ['uiSelectMinErr','$timeout', function(uiSelectMinErr, $timeout) {
+uis.directive('uiSelectMultiple', ['uiSelectMinErr','$timeout', '$window', function(uiSelectMinErr, $timeout, $window) {
   return {
     restrict: 'EA',
     require: ['^uiSelect', '^ngModel'],
@@ -399,6 +399,14 @@ uis.directive('uiSelectMultiple', ['uiSelectMinErr','$timeout', function(uiSelec
         });
       });
 
+      function onWindowResize() {
+        $select.sizeSearchInput();
+      }
+
+      angular.element($window).on('resize', onWindowResize);
+      scope.$on('$destroy', function() {
+        angular.element($window).off('resize', null, onWindowResize);
+      });
     }
   };
 }]);
